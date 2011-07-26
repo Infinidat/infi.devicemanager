@@ -1,0 +1,40 @@
+
+# generic
+*.tmp
+*.swp
+*.pyc
+*.pyo
+*.bak
+*.egg-info
+*.EGG-INFO
+.coverage
+.settings
+
+# eclipse
+.project
+.pydevproject
+
+# setuptools
+bin/
+build/
+dist/
+setup.py
+
+# buildout
+.installed*.cfg
+.cache/
+eggs/
+develop-eggs/
+parts/
+build/
+dist/
+src/infi/hello/__version__.py
+.achievements
+
+# scm
+.bzr/
+.svn/
+.hg/
+
+
+src/infi/devicemanager/__version__.py

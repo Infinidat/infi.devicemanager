@@ -1,0 +1,181 @@
+
+from infi.exceptools import chain
+from ctypes import c_buffer, byref
+from .constants import DIGCF_PRESENT, DIGCF_ALLCLASSES, DIOD_INHERIT_CLASSDRVS
+from .constants import ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND, ERROR_INSUFFICIENT_BUFFER
+from .structures import GUID
+from .structures import DEVPROPKEY, SP_DEVINFO_DATA
+from . import DWORD, WindowsException
+
+def pretty_string_to_guid(pretty_string):
+    from binascii import unhexlify
+    pretty_string = ''.join(pretty_string.strip("{}").split('-'))
+    pretty_string = pretty_string[0:8][::-1] + pretty_string[8:12][::-1] + \
+                    pretty_string[12:16][::-1] + pretty_string[16:]
+    pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
+                    pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
+                    pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
+    guid = GUID.create_instance_from_string(unhexlify(pretty_string))
+    return guid
+
+def guid_to_pretty_string(guid):
+    from binascii import hexlify
+    pretty_string = hexlify(GUID.instance_to_string(guid)).upper()
+    pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
+                    pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
+                    pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
+    pretty_string = pretty_string[0:8][::-1] + pretty_string[8:12][::-1] + \
+                    pretty_string[12:16][::-1] + pretty_string[16:]
+    return '-'.join([pretty_string[:8], pretty_string[8:12], pretty_string[12:16],
+                     pretty_string[16:20], pretty_string[20:]])
+
+def SetupDiGetClassDevs(guid_string=None, enumerator_string=None, parent_handle=0, flags=DIGCF_PRESENT):
+    from . import SetupDiGetClassDevsW as interface
+    from ctypes import create_unicode_buffer
+    if guid_string is not None:
+        guid = pretty_string_to_guid(guid_string)
+        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.sizeof())
+    else:
+        flags = flags | DIGCF_ALLCLASSES
+        guid_buffer = 0
+    enumerator_buffer = 0 if enumerator_string is None else create_unicode_buffer(enumerator_string)
+    return interface(guid_buffer, enumerator_buffer, parent_handle, flags)
+
+def generator(decorated_func):
+    def callee(*args, **kwargs):
+        from . import WindowsException
+        index = 0
+        while True:
+            try:
+                kwargs["index"] = index
+                yield decorated_func(*args, **kwargs)
+                index += 1
+            except WindowsException, exception:
+                if exception.winerror in [ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND]: # TODO why ERROR_BAD_COMMAND?
+                    raise StopIteration
+                chain(exception)
+
+    callee.__name__ = decorated_func.__name__
+    callee.__doc__ = decorated_func.__doc__
+    callee.__dict__ = decorated_func.__dict__
+    return callee
+
+@generator
+def SetupDiEnumDeviceInfo(device_info_set, index):
+    from . import SetupDiEnumDeviceInfo as interface
+    device_info_data = SP_DEVINFO_DATA.create_instance_from_string('\x00' * SP_DEVINFO_DATA.sizeof())
+    device_info_data.cbSize = SP_DEVINFO_DATA.sizeof()
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.sizeof())
+    interface(device_info_set, index, device_info_buffer)
+    return SP_DEVINFO_DATA.create_instance_from_string(device_info_buffer)
+
+def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
+    from .structures import FixedSizeArray, Struct
+    from . import SetupDiGetDevicePropertyKeys as interface
+
+    required_key_count = DWORD()
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.sizeof())
+    try:
+        interface(device_info_set, device_info_buffer, 0, 0, byref(required_key_count), 0)
+    except WindowsException, exception:
+        if exception.winerror == ERROR_INSUFFICIENT_BUFFER:
+            pass
+
+    class PropertyKeyArray(Struct):
+        _fields_ = [FixedSizeArray("keys", required_key_count.value, DEVPROPKEY)]
+
+    keys_buffer = c_buffer('\x00' * PropertyKeyArray.sizeof(), PropertyKeyArray.sizeof())
+    interface(device_info_set, device_info_buffer, keys_buffer, required_key_count,
+              byref(required_key_count), 0)
+    return PropertyKeyArray.create_instance_from_string(keys_buffer).keys
+
+def SetupDiGetDeviceProperty(device_info_set, devinfo_data, property_key):
+    from . import SetupDiGetDevicePropertyW as interface
+
+    value_type = DWORD()
+    required_size = DWORD()
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.sizeof())
+    property_key_buffer = c_buffer(DEVPROPKEY.instance_to_string(property_key), DEVPROPKEY.sizeof())
+    try:
+        interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
+                  0, 0, byref(required_size), 0)
+    except WindowsException, exception:
+        if exception.winerror == ERROR_INSUFFICIENT_BUFFER:
+            pass
+
+    value_buffer = c_buffer(required_size.value)
+    interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
+              value_buffer, required_size, byref(required_size), 0)
+    return Property(value_buffer.raw, value_type.value, property_key)
+
+def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASSDRVS):
+    from . import SetupDiOpenDeviceInfoW as interface
+    from ctypes import create_unicode_buffer
+
+    instance_id_buffer = create_unicode_buffer(instance_id)
+    device_info_data = SP_DEVINFO_DATA.create_instance_from_string('\x00' * SP_DEVINFO_DATA.sizeof())
+    device_info_data.cbSize = SP_DEVINFO_DATA.sizeof()
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.sizeof())
+    interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
+    return SP_DEVINFO_DATA.create_instance_from_string(device_info_buffer)
+
+def SetupDiCreateDeviceInfoList(guid_string=None):
+    from . import SetupDiCreateDeviceInfoList as interface
+    if guid_string is not None:
+        guid = pretty_string_to_guid(guid_string)
+        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.sizeof())
+    else:
+        guid_buffer = 0
+    return interface(guid_buffer, 0)
+
+from . import SetupDiDestroyDeviceInfoList
+
+class Property(object):
+    def __init__(self, value_buffer, value_type, key):
+        self._buffer = value_buffer
+        self._type = value_type
+        self._object = None
+        self._key = key
+
+    @property
+    def python_object(self):
+        if self._object is None:
+            self._object = self._get_python_object()
+        return self._object
+
+    def _get_python_object(self):
+        from . import properties
+        from .structures import Struct, FixedSizeArray, ULInt32, ULInt8
+        from .structures import FILETIME, SECURITY_DESCRIPTOR
+        from . import ConvertStringSecurityDescriptorToSecurityDescriptorW as ConvertSDDL
+        from .constants import SDDL_REVISION_1
+        if self._type in [properties.DEVPROP_TYPE_STRING]:
+            return unicode(self._buffer, encoding="utf-16")[:-1]
+        if self._type in [properties.DEVPROP_TYPE_STRING_LIST]:
+            return unicode(self._buffer, encoding="utf-16")[:-1].split(unichr(0))[:-1]
+        if self._type in [properties.DEVPROP_TYPE_GUID]:
+            return GUID.create_instance_from_string(self._buffer)
+        if self._type in [properties.DEVPROP_TYPE_UINT32]:
+            class Value(Struct):
+                _fields_ = [ULInt32("value")]
+            return Value.create_instance_from_string(self._buffer).value
+        if self._type in [properties.DEVPROP_TYPE_BINARY]:
+            class Value(Struct):
+                _fields_ = [FixedSizeArray("value", len(self._buffer), ULInt8)]
+            return Value.create_instance_from_string(self._buffer).value
+        if self._type in [properties.DEVPROP_TYPE_BOOLEAN]:
+            class Value(Struct):
+                _fields_ = [ULInt8("value")]
+            return Value.create_instance_from_string(self._buffer).value != 0
+        if self._type in [properties.DEVPROP_TYPE_FILETIME]:
+            return FILETIME.create_instance_from_string(self._buffer)
+        if self._type in [properties.DEVPROP_TYPE_SECURITY_DESCRIPTOR]:
+            return SECURITY_DESCRIPTOR.create_instance_from_string(self._buffer)
+        if self._type in [properties.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING]:
+            sd_buffer = c_buffer('\x00' * SECURITY_DESCRIPTOR.sizeof())
+            ConvertSDDL(c_buffer(self._buffer), SDDL_REVISION_1, sd_buffer, 0)
+            return SECURITY_DESCRIPTOR.create_instance_from_string(sd_buffer)
+        from logging import debug
+        debug(self._buffer); debug(self._type); debug(self._key)
+        raise ValueError(self._buffer, self._type)
+
