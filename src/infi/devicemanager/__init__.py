@@ -2,7 +2,7 @@ __import__("pkg_resources").declare_namespace(__name__)
 
 from contextlib import contextmanager
 from infi.exceptools import chain
-from .c_api import functions, properties, constants
+from .setupapi import functions, properties, constants
 from .ioctl import DeviceIoControl
 
 ROOT_INSTANCE_ID = u"HTREE\\ROOT\\0"
@@ -25,7 +25,7 @@ class Device(object):
                 functions.SetupDiDestroyDeviceInfoList(dis)
 
     def _get_setupapi_property(self, key):
-        from .c_api import WindowsException
+        from .setupapi import WindowsException
         with self._open_handle() as handle:
             dis, devinfo = handle
             try:
