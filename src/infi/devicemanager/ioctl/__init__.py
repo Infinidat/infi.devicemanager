@@ -33,7 +33,8 @@ def ioctl_scsi_get_address(handle):
     instance.Length = SCSI_ADDRESS.sizeof()
     string = c_buffer(SCSI_ADDRESS.instance_to_string(instance), size)
     _ = ioctl(handle, IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
-    return SCSI_ADDRESS.create_instance_from_string(string)
+    instance = SCSI_ADDRESS.create_instance_from_string(string)
+    return (instance.PortNumber, instance.PathId, instance.TargetId, instance.Lun)
 
 def ioctl_storage_get_device_number(handle):
     from .structures import STORAGE_DEVICE_NUMBER
@@ -42,7 +43,18 @@ def ioctl_storage_get_device_number(handle):
     size = STORAGE_DEVICE_NUMBER.sizeof()
     string = c_buffer('\x00' * size, size)
     _ = ioctl(handle, IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
-    return STORAGE_DEVICE_NUMBER.create_instance_from_string(string)
+    instance = STORAGE_DEVICE_NUMBER.create_instance_from_string(string)
+    return instance.DeviceNumber
+
+def ioctl_disk_get_length_info(handle):
+    from .structures import GET_LENGTH_INFORMATION, is_64bit
+    from .constants import IOCTL_DISK_GET_LENGTH_INFO
+    from ctypes import c_buffer
+    size = GET_LENGTH_INFORMATION.sizeof()
+    string = c_buffer('\x00' * size, size)
+    _ = ioctl(handle, IOCTL_DISK_GET_LENGTH_INFO, 0, 0, string, size)
+    instance = GET_LENGTH_INFORMATION.create_instance_from_string(string)
+    return instance.QuadPart if is_64bit() else instance.HighPart << 32 + instance.LowPart
 
 class DeviceIoControl(object):
     def __init__(self, device_path):
@@ -50,9 +62,16 @@ class DeviceIoControl(object):
         self.device_path = device_path
 
     def scsi_get_address(self):
+        """returns a tuple (host, channel, target, lun)"""
         with open_handle(self.device_path) as handle:
             return ioctl_scsi_get_address(handle)
 
     def storage_get_device_number(self):
+        """returns the %d from PhysicalDriveX"""
         with open_handle(self.device_path) as handle:
             return ioctl_storage_get_device_number(handle)
+
+    def disk_get_length_info(self):
+        """returns size in bytes of device"""
+        with open_handle(self.device_path) as handle:
+            return ioctl_disk_get_length_info(handle)
