@@ -32,6 +32,9 @@ class TestCase(unittest.TestCase):
         for disk in devices:
             scsi_address = DeviceIoControl(disk.psuedo_device_object).scsi_get_address()
             device_number = DeviceIoControl(disk.psuedo_device_object).storage_get_device_number()
+            self.assertTrue(isinstance(device_number, int) or isinstance(device_number, long))
+            size = DeviceIoControl(disk.psuedo_device_object).disk_get_drive_geometry_ex()
+            self.assertTrue(isinstance(size, int) or isinstance(size, long))
 
     def test_list_properties(self):
         dm = DeviceManager()

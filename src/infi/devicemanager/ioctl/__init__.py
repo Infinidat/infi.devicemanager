@@ -46,14 +46,21 @@ def ioctl_storage_get_device_number(handle):
     instance = STORAGE_DEVICE_NUMBER.create_instance_from_string(string)
     return instance.DeviceNumber
 
-def ioctl_disk_get_length_info(handle):
-    from .structures import GET_LENGTH_INFORMATION, is_64bit
-    from .constants import IOCTL_DISK_GET_LENGTH_INFO
+def ioctl_disk_get_drive_geometry_ex(handle):
+    from .structures import DISK_GEOMETRY_EX, is_64bit
+    from .constants import IOCTL_DISK_GET_DRIVE_GEOMETRY_EX
+    from .api import WindowsException
     from ctypes import c_buffer
-    size = GET_LENGTH_INFORMATION.min_max_sizeof().max
+    size = DISK_GEOMETRY_EX.min_max_sizeof().max
     string = c_buffer('\x00' * size, size)
-    _ = ioctl(handle, IOCTL_DISK_GET_LENGTH_INFO, 0, 0, string, size)
-    instance = GET_LENGTH_INFORMATION.create_instance_from_string(string)
+    try:
+        # this IOCTL expects a variable-length buffer for storing infomation about partitions
+        # we don't care about that, so we send a short buffer on purpose. this raises an exception
+        _ = ioctl(handle, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, 0, 0, string, size)
+    except WindowsException, e:
+        # TODO finer grained exception handling
+        pass
+    instance = DISK_GEOMETRY_EX.create_instance_from_string(string).DiskSize
     return instance.QuadPart if is_64bit() else instance.HighPart << 32 + instance.LowPart
 
 class DeviceIoControl(object):
@@ -71,7 +78,8 @@ class DeviceIoControl(object):
         with open_handle(self.device_path) as handle:
             return ioctl_storage_get_device_number(handle)
 
-    def disk_get_length_info(self):
+    def disk_get_drive_geometry_ex(self):
         """returns size in bytes of device"""
         with open_handle(self.device_path) as handle:
-            return ioctl_disk_get_length_info(handle)
+            return ioctl_disk_get_drive_geometry_ex(handle)
+

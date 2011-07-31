@@ -1,4 +1,4 @@
-from infi.instruct import ULInt64, ULInt32, ULInt16, ULInt8, Field
+from infi.instruct import ULInt64, ULInt32, ULInt16, ULInt8, Field, FixedSizeArray
 from infi.instruct import Struct
 
 def is_64bit():
@@ -21,5 +21,10 @@ class STORAGE_DEVICE_NUMBER(Struct):
 class LARGE_INTEGER(Struct):
     _fields_ = [ULInt64("QuadPart"), ] if is_64bit() else [DWORD("LowPart"), DWORD("HighPart")]
 
-class GET_LENGTH_INFORMATION(Struct):
-    _fields_ = [Field("Length", LARGE_INTEGER), ]
+class DISK_GEOMETRY(Struct):
+    _fields_ = [Field("Cylinders", LARGE_INTEGER), DWORD("MediaType"),
+                DWORD("TracksPerCylinder"), DWORD("SectorsPerTrack"), DWORD("BytesPerSector")]
+
+class DISK_GEOMETRY_EX(Struct):
+    _fields_ = [Field("Geometry", DISK_GEOMETRY), Field("DiskSize", LARGE_INTEGER),
+               ]# it is actually a variable-length structure, but we don't care about the rest
