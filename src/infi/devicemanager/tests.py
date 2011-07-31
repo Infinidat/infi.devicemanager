@@ -56,3 +56,9 @@ class TestCase(unittest.TestCase):
         for device in dm.disk_drives:
             self.assertEqual(len(device.children), 0)
 
+    def test_disk_drives_instance_ids(self):
+        dm = DeviceManager()
+        for device in dm.disk_drives:
+            instance_id = device._instance_id
+            self.assertFalse(instance_id.isupper())
+

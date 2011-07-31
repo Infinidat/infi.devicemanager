@@ -157,8 +157,13 @@ class DeviceManager(object):
 
     @property
     def disk_drives(self):
-        with self._open_handle(constants.GENDISK_GUID_STRING) as handle:
-            return self.get_devices_from_handle(handle)
+        # with self._open_handle(constants.GENDISK_GUID_STRING) as handle:
+        #     return self.get_devices_from_handle(handle)
+        # doing it this way returns InstanceIDs in upper case
+        disk_drives = []
+        for controller in self.storage_controllers:
+            disk_drives.extend(filter(lambda device: device.class_guid == constants.GENDISK_GUID_STRING, controller.children))
+        return disk_drives
 
     @property
     def storage_controllers(self):
