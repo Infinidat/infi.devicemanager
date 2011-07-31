@@ -79,7 +79,12 @@ class Device(object):
     @property
     def children(self):
         children = []
-        for instance_id in self._get_setupapi_property(properties.DEVPKEY_Device_Children):
+        items = []
+        try:
+            items = self._get_setupapi_property(properties.DEVPKEY_Device_Children)
+        except KeyError:
+            pass
+        for instance_id in items:
             children.append(Device(instance_id))
         return children
 
