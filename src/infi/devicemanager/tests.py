@@ -51,3 +51,8 @@ class TestCase(unittest.TestCase):
         devices = dm.scsi_devices
         self.assertGreater(len(devices), 0)
 
+    def test_children_on_device_with_no_children(self):
+        dm = DeviceManager()
+        for device in dm.disk_drives:
+            self.assertEqual(len(device.children), 0)
+
