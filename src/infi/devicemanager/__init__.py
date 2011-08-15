@@ -162,7 +162,13 @@ class DeviceManager(object):
         # doing it this way returns InstanceIDs in upper case
         disk_drives = []
         for controller in self.storage_controllers:
-            disk_drives.extend(filter(lambda device: device.class_guid == constants.GENDISK_GUID_STRING, controller.children))
+            def match_class_guid(device):
+                try:
+                    return device.class_guid == constants.GENDISK_GUID_STRING
+                except KeyError:
+                    # race condition can happen when devices disappear
+                    return False
+            disk_drives.extend(filter(match_class_guid, controller.children))
         return disk_drives
 
     @property
