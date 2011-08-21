@@ -29,11 +29,11 @@ def ioctl_scsi_get_address(handle):
     from .constants import IOCTL_SCSI_GET_ADDRESS
     from ctypes import c_buffer
     size = SCSI_ADDRESS.min_max_sizeof().max
-    instance = SCSI_ADDRESS.create_instance_from_string('\x00' * size)
+    instance = SCSI_ADDRESS.create_from_string('\x00' * size)
     instance.Length = SCSI_ADDRESS.min_max_sizeof().max
     string = c_buffer(SCSI_ADDRESS.instance_to_string(instance), size)
     _ = ioctl(handle, IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
-    instance = SCSI_ADDRESS.create_instance_from_string(string)
+    instance = SCSI_ADDRESS.create_from_string(string)
     return (instance.PortNumber, instance.PathId, instance.TargetId, instance.Lun)
 
 def ioctl_storage_get_device_number(handle):
@@ -43,7 +43,7 @@ def ioctl_storage_get_device_number(handle):
     size = STORAGE_DEVICE_NUMBER.min_max_sizeof().max
     string = c_buffer('\x00' * size, size)
     _ = ioctl(handle, IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
-    instance = STORAGE_DEVICE_NUMBER.create_instance_from_string(string)
+    instance = STORAGE_DEVICE_NUMBER.create_from_string(string)
     return instance.DeviceNumber
 
 def ioctl_disk_get_drive_geometry_ex(handle):
@@ -60,7 +60,7 @@ def ioctl_disk_get_drive_geometry_ex(handle):
     except WindowsException, e:
         # TODO finer grained exception handling
         pass
-    instance = DISK_GEOMETRY_EX.create_instance_from_string(string).DiskSize
+    instance = DISK_GEOMETRY_EX.create_from_string(string).DiskSize
     return instance.QuadPart if is_64bit() else instance.HighPart << 32 + instance.LowPart
 
 class DeviceIoControl(object):
