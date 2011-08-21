@@ -20,7 +20,7 @@ def pretty_string_to_guid(pretty_string):
 
 def guid_to_pretty_string(guid):
     from binascii import hexlify
-    pretty_string = hexlify(GUID.instance_to_string(guid)).upper()
+    pretty_string = hexlify(GUID.write_to_string(guid)).upper()
     pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
                     pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
                     pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
@@ -34,7 +34,7 @@ def SetupDiGetClassDevs(guid_string=None, enumerator_string=None, parent_handle=
     from ctypes import create_unicode_buffer
     if guid_string is not None:
         guid = pretty_string_to_guid(guid_string)
-        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.min_max_sizeof().max)
+        guid_buffer = c_buffer(GUID.write_to_string(guid), GUID.min_max_sizeof().max)
     else:
         flags = flags | DIGCF_ALLCLASSES
         guid_buffer = 0
@@ -65,7 +65,7 @@ def SetupDiEnumDeviceInfo(device_info_set, index):
     from . import SetupDiEnumDeviceInfo as interface
     device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, index, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -74,7 +74,7 @@ def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     from . import SetupDiGetDevicePropertyKeys as interface
 
     required_key_count = DWORD()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     try:
         interface(device_info_set, device_info_buffer, 0, 0, byref(required_key_count), 0)
     except WindowsException, exception:
@@ -94,8 +94,8 @@ def SetupDiGetDeviceProperty(device_info_set, devinfo_data, property_key):
 
     value_type = DWORD()
     required_size = DWORD()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
-    property_key_buffer = c_buffer(DEVPROPKEY.instance_to_string(property_key), DEVPROPKEY.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    property_key_buffer = c_buffer(DEVPROPKEY.write_to_string(property_key), DEVPROPKEY.min_max_sizeof().max)
     try:
         interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
                   0, 0, byref(required_size), 0)
@@ -115,7 +115,7 @@ def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASS
     instance_id_buffer = create_unicode_buffer(instance_id)
     device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -123,7 +123,7 @@ def SetupDiCreateDeviceInfoList(guid_string=None):
     from . import SetupDiCreateDeviceInfoList as interface
     if guid_string is not None:
         guid = pretty_string_to_guid(guid_string)
-        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.min_max_sizeof().max)
+        guid_buffer = c_buffer(GUID.write_to_string(guid), GUID.min_max_sizeof().max)
     else:
         guid_buffer = 0
     return interface(guid_buffer, 0)
