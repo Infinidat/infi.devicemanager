@@ -25,7 +25,7 @@ DEVPROPGUID = GUID
 DEVPROPID = DWORD
 DEVPROPTYPE = DWORD
 
-class DEVPROPKEY(Struct):
+class DEVPROPKEY(GUID):
     _fields_ = GUID._fields_ + [DEVPROPID("pid")]
 
     def __eq__(self, other):

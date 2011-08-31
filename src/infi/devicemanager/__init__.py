@@ -2,7 +2,7 @@ __import__("pkg_resources").declare_namespace(__name__)
 
 from contextlib import contextmanager
 from infi.exceptools import chain
-from .c_api import functions, properties, constants
+from .setupapi import functions, properties, constants
 from .ioctl import DeviceIoControl
 
 ROOT_INSTANCE_ID = u"HTREE\\ROOT\\0"
@@ -25,7 +25,7 @@ class Device(object):
                 functions.SetupDiDestroyDeviceInfoList(dis)
 
     def _get_setupapi_property(self, key):
-        from .c_api import WindowsException
+        from .setupapi import WindowsException
         with self._open_handle() as handle:
             dis, devinfo = handle
             try:
@@ -79,7 +79,12 @@ class Device(object):
     @property
     def children(self):
         children = []
-        for instance_id in self._get_setupapi_property(properties.DEVPKEY_Device_Children):
+        items = []
+        try:
+            items = self._get_setupapi_property(properties.DEVPKEY_Device_Children)
+        except KeyError:
+            pass
+        for instance_id in items:
             children.append(Device(instance_id))
         return children
 
@@ -152,8 +157,19 @@ class DeviceManager(object):
 
     @property
     def disk_drives(self):
-        with self._open_handle(constants.GENDISK_GUID_STRING) as handle:
-            return self.get_devices_from_handle(handle)
+        # with self._open_handle(constants.GENDISK_GUID_STRING) as handle:
+        #     return self.get_devices_from_handle(handle)
+        # doing it this way returns InstanceIDs in upper case
+        disk_drives = []
+        for controller in self.storage_controllers:
+            def match_class_guid(device):
+                try:
+                    return device.class_guid == constants.GENDISK_GUID_STRING
+                except KeyError:
+                    # race condition can happen when devices disappear
+                    return False
+            disk_drives.extend(filter(match_class_guid, controller.children))
+        return disk_drives
 
     @property
     def storage_controllers(self):

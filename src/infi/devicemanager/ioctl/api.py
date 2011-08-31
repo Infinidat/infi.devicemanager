@@ -13,7 +13,7 @@ class WindowsException(Exception):
         self.strerror = FormatError(errno)
 
     def __repr__(self):
-        return "%s, %s" % (self.winwerror, self.strerror)
+        return "%s, %s" % (self.winerror, self.strerror)
 
     def __str__(self):
         return self.__repr__()

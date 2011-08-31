@@ -15,12 +15,12 @@ def pretty_string_to_guid(pretty_string):
     pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
                     pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
                     pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
-    guid = GUID.create_instance_from_string(unhexlify(pretty_string))
+    guid = GUID.create_from_string(unhexlify(pretty_string))
     return guid
 
 def guid_to_pretty_string(guid):
     from binascii import hexlify
-    pretty_string = hexlify(GUID.instance_to_string(guid)).upper()
+    pretty_string = hexlify(GUID.write_to_string(guid)).upper()
     pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
                     pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
                     pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
@@ -34,7 +34,7 @@ def SetupDiGetClassDevs(guid_string=None, enumerator_string=None, parent_handle=
     from ctypes import create_unicode_buffer
     if guid_string is not None:
         guid = pretty_string_to_guid(guid_string)
-        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.sizeof())
+        guid_buffer = c_buffer(GUID.write_to_string(guid), GUID.min_max_sizeof().max)
     else:
         flags = flags | DIGCF_ALLCLASSES
         guid_buffer = 0
@@ -63,18 +63,18 @@ def generator(decorated_func):
 @generator
 def SetupDiEnumDeviceInfo(device_info_set, index):
     from . import SetupDiEnumDeviceInfo as interface
-    device_info_data = SP_DEVINFO_DATA.create_instance_from_string('\x00' * SP_DEVINFO_DATA.sizeof())
-    device_info_data.cbSize = SP_DEVINFO_DATA.sizeof()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.sizeof())
+    device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, index, device_info_buffer)
-    return SP_DEVINFO_DATA.create_instance_from_string(device_info_buffer)
+    return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
 def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     from .structures import FixedSizeArray, Struct
     from . import SetupDiGetDevicePropertyKeys as interface
 
     required_key_count = DWORD()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.sizeof())
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     try:
         interface(device_info_set, device_info_buffer, 0, 0, byref(required_key_count), 0)
     except WindowsException, exception:
@@ -84,18 +84,18 @@ def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     class PropertyKeyArray(Struct):
         _fields_ = [FixedSizeArray("keys", required_key_count.value, DEVPROPKEY)]
 
-    keys_buffer = c_buffer('\x00' * PropertyKeyArray.sizeof(), PropertyKeyArray.sizeof())
+    keys_buffer = c_buffer('\x00' * PropertyKeyArray.min_max_sizeof().max, PropertyKeyArray.min_max_sizeof().max)
     interface(device_info_set, device_info_buffer, keys_buffer, required_key_count,
               byref(required_key_count), 0)
-    return PropertyKeyArray.create_instance_from_string(keys_buffer).keys
+    return PropertyKeyArray.create_from_string(keys_buffer).keys
 
 def SetupDiGetDeviceProperty(device_info_set, devinfo_data, property_key):
     from . import SetupDiGetDevicePropertyW as interface
 
     value_type = DWORD()
     required_size = DWORD()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(devinfo_data), SP_DEVINFO_DATA.sizeof())
-    property_key_buffer = c_buffer(DEVPROPKEY.instance_to_string(property_key), DEVPROPKEY.sizeof())
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    property_key_buffer = c_buffer(DEVPROPKEY.write_to_string(property_key), DEVPROPKEY.min_max_sizeof().max)
     try:
         interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
                   0, 0, byref(required_size), 0)
@@ -113,17 +113,17 @@ def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASS
     from ctypes import create_unicode_buffer
 
     instance_id_buffer = create_unicode_buffer(instance_id)
-    device_info_data = SP_DEVINFO_DATA.create_instance_from_string('\x00' * SP_DEVINFO_DATA.sizeof())
-    device_info_data.cbSize = SP_DEVINFO_DATA.sizeof()
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.instance_to_string(device_info_data), SP_DEVINFO_DATA.sizeof())
+    device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
-    return SP_DEVINFO_DATA.create_instance_from_string(device_info_buffer)
+    return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
 def SetupDiCreateDeviceInfoList(guid_string=None):
     from . import SetupDiCreateDeviceInfoList as interface
     if guid_string is not None:
         guid = pretty_string_to_guid(guid_string)
-        guid_buffer = c_buffer(GUID.instance_to_string(guid), GUID.sizeof())
+        guid_buffer = c_buffer(GUID.write_to_string(guid), GUID.min_max_sizeof().max)
     else:
         guid_buffer = 0
     return interface(guid_buffer, 0)
@@ -154,27 +154,27 @@ class Property(object):
         if self._type in [properties.DEVPROP_TYPE_STRING_LIST]:
             return unicode(self._buffer, encoding="utf-16")[:-1].split(unichr(0))[:-1]
         if self._type in [properties.DEVPROP_TYPE_GUID]:
-            return GUID.create_instance_from_string(self._buffer)
+            return GUID.create_from_string(self._buffer)
         if self._type in [properties.DEVPROP_TYPE_UINT32]:
             class Value(Struct):
                 _fields_ = [ULInt32("value")]
-            return Value.create_instance_from_string(self._buffer).value
+            return Value.create_from_string(self._buffer).value
         if self._type in [properties.DEVPROP_TYPE_BINARY]:
             class Value(Struct):
                 _fields_ = [FixedSizeArray("value", len(self._buffer), ULInt8)]
-            return Value.create_instance_from_string(self._buffer).value
+            return Value.create_from_string(self._buffer).value
         if self._type in [properties.DEVPROP_TYPE_BOOLEAN]:
             class Value(Struct):
                 _fields_ = [ULInt8("value")]
-            return Value.create_instance_from_string(self._buffer).value != 0
+            return Value.create_from_string(self._buffer).value != 0
         if self._type in [properties.DEVPROP_TYPE_FILETIME]:
-            return FILETIME.create_instance_from_string(self._buffer)
+            return FILETIME.create_from_string(self._buffer)
         if self._type in [properties.DEVPROP_TYPE_SECURITY_DESCRIPTOR]:
-            return SECURITY_DESCRIPTOR.create_instance_from_string(self._buffer)
+            return SECURITY_DESCRIPTOR.create_from_string(self._buffer)
         if self._type in [properties.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING]:
-            sd_buffer = c_buffer('\x00' * SECURITY_DESCRIPTOR.sizeof())
+            sd_buffer = c_buffer('\x00' * SECURITY_DESCRIPTOR.min_max_sizeof().max)
             ConvertSDDL(c_buffer(self._buffer), SDDL_REVISION_1, sd_buffer, 0)
-            return SECURITY_DESCRIPTOR.create_instance_from_string(sd_buffer)
+            return SECURITY_DESCRIPTOR.create_from_string(sd_buffer)
         from logging import debug
         debug(self._buffer); debug(self._type); debug(self._key)
         raise ValueError(self._buffer, self._type)

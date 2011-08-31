@@ -12,8 +12,8 @@ class StructuresTestCase(unittest.TestCase):
 
     def test_sizes(self):
         from .structures import GUID, SP_DEVINFO_DATA, is_64bit
-        self.assertEqual(GUID.sizeof(), 16)
-        self.assertEqual(SP_DEVINFO_DATA.sizeof(), 32 if is_64bit() else 28)
+        self.assertEqual(GUID.min_max_sizeof().max, 16)
+        self.assertEqual(SP_DEVINFO_DATA.min_max_sizeof().max, 32 if is_64bit() else 28)
 
 class FunctionTestCase(unittest.TestCase):
     def setUp(self):

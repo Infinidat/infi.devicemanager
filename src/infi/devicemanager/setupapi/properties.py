@@ -1,245 +1,246 @@
 
+
 from .structures import DEVPROPKEY, BYTE
 
-DEVPKEY_NAME = DEVPROPKEY.create(
+DEVPKEY_NAME = DEVPROPKEY(
     Data1=0xb725f130,
     Data2=0x47ef,
     Data3=0x101a,
     Data4=[0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac],
     pid=10)
 
-DEVPKEY_Device_DeviceDesc = DEVPROPKEY.create(
+DEVPKEY_Device_DeviceDesc = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=2)
 
-DEVPKEY_Device_HardwareIds = DEVPROPKEY.create(
+DEVPKEY_Device_HardwareIds = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=3) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_CompatibleIds = DEVPROPKEY.create(
+DEVPKEY_Device_CompatibleIds = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=4) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_Service = DEVPROPKEY.create(
+DEVPKEY_Device_Service = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=6) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_Class = DEVPROPKEY.create(
+DEVPKEY_Device_Class = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=9) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_ClassGuid = DEVPROPKEY.create(
+DEVPKEY_Device_ClassGuid = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=10) # DEVPROP_TYPE_GUID
 
-DEVPKEY_Device_Driver = DEVPROPKEY.create(
+DEVPKEY_Device_Driver = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=11) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_ConfigFlags = DEVPROPKEY.create(
+DEVPKEY_Device_ConfigFlags = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=12) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_Manufacturer = DEVPROPKEY.create(
+DEVPKEY_Device_Manufacturer = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=13) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_FriendlyName = DEVPROPKEY.create(
+DEVPKEY_Device_FriendlyName = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=14) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_LocationInfo = DEVPROPKEY.create(
+DEVPKEY_Device_LocationInfo = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=15) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_PDOName = DEVPROPKEY.create(
+DEVPKEY_Device_PDOName = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=16) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_Capabilities = DEVPROPKEY.create(
+DEVPKEY_Device_Capabilities = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=17) # DEVPROP_TYPE_UNINT32
 
-DEVPKEY_Device_UINumber = DEVPROPKEY.create(
+DEVPKEY_Device_UINumber = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=18) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_UpperFilters = DEVPROPKEY.create(
+DEVPKEY_Device_UpperFilters = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=19) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_LowerFilters = DEVPROPKEY.create(
+DEVPKEY_Device_LowerFilters = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=20) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_BusTypeGuid = DEVPROPKEY.create(
+DEVPKEY_Device_BusTypeGuid = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=21) # DEVPROP_TYPE_GUID
 
-DEVPKEY_Device_LegacyBusType = DEVPROPKEY.create(
+DEVPKEY_Device_LegacyBusType = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=22) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_BusNumber = DEVPROPKEY.create(
+DEVPKEY_Device_BusNumber = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=23) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_EnumeratorName = DEVPROPKEY.create(
+DEVPKEY_Device_EnumeratorName = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=24) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_Security = DEVPROPKEY.create(
+DEVPKEY_Device_Security = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=25) # DEVPROP_TYPE_SECURITY_DESCRIPTOR
 
-DEVPKEY_Device_SecuritySDS = DEVPROPKEY.create(
+DEVPKEY_Device_SecuritySDS = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=26) # DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING
 
-DEVPKEY_Device_DevType = DEVPROPKEY.create(
+DEVPKEY_Device_DevType = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=27) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_Exclusive = DEVPROPKEY.create(
+DEVPKEY_Device_Exclusive = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=28) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_Characteristics = DEVPROPKEY.create(
+DEVPKEY_Device_Characteristics = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=29) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_Address = DEVPROPKEY.create(
+DEVPKEY_Device_Address = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=30) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_UINumberDescFormat = DEVPROPKEY.create(
+DEVPKEY_Device_UINumberDescFormat = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=31) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_PowerData = DEVPROPKEY.create(
+DEVPKEY_Device_PowerData = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=32) # DEVPROP_TYPE_BINARY
 
-DEVPKEY_Device_RemovalPolicy = DEVPROPKEY.create(
+DEVPKEY_Device_RemovalPolicy = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=33) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_RemovalPolicyDefault = DEVPROPKEY.create(
+DEVPKEY_Device_RemovalPolicyDefault = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=34) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_RemovalPolicyOverride = DEVPROPKEY.create(
+DEVPKEY_Device_RemovalPolicyOverride = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=35) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_InstallState = DEVPROPKEY.create(
+DEVPKEY_Device_InstallState = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=36) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_LocationPaths = DEVPROPKEY.create(
+DEVPKEY_Device_LocationPaths = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
     Data4=[0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0],
     pid=37) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_BaseContainerId = DEVPROPKEY.create(
+DEVPKEY_Device_BaseContainerId = DEVPROPKEY(
     Data1=0xa45c254e,
     Data2=0xdf1c,
     Data3=0x4efd,
@@ -247,14 +248,14 @@ DEVPKEY_Device_BaseContainerId = DEVPROPKEY.create(
     pid=38) # DEVPROP_TYPE_GUID
 
 
-DEVPKEY_Device_DevNodeStatus = DEVPROPKEY.create(
+DEVPKEY_Device_DevNodeStatus = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=2) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_ProblemCode = DEVPROPKEY.create(
+DEVPKEY_Device_ProblemCode = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
@@ -262,259 +263,259 @@ DEVPKEY_Device_ProblemCode = DEVPROPKEY.create(
     pid=3) # DEVPROP_TYPE_UINT32
 
 
-DEVPKEY_Device_EjectionRelations = DEVPROPKEY.create(
+DEVPKEY_Device_EjectionRelations = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=4) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_RemovalRelations = DEVPROPKEY.create(
+DEVPKEY_Device_RemovalRelations = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=5) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_PowerRelations = DEVPROPKEY.create(
+DEVPKEY_Device_PowerRelations = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=6) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_BusRelations = DEVPROPKEY.create(
+DEVPKEY_Device_BusRelations = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=7) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_Parent = DEVPROPKEY.create(
+DEVPKEY_Device_Parent = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=8) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_Children = DEVPROPKEY.create(
+DEVPKEY_Device_Children = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=9) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_Siblings = DEVPROPKEY.create(
+DEVPKEY_Device_Siblings = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=10) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_TransportRelations = DEVPROPKEY.create(
+DEVPKEY_Device_TransportRelations = DEVPROPKEY(
     Data1=0x4340a6c5,
     Data2=0x93fa,
     Data3=0x4706,
     Data4=[0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7],
     pid=11) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_Reported = DEVPROPKEY.create(
+DEVPKEY_Device_Reported = DEVPROPKEY(
     Data1=0x80497100,
     Data2=0x8c73,
     Data3=0x48b9,
     Data4=[0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e],
     pid=2) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_Legacy = DEVPROPKEY.create(
+DEVPKEY_Device_Legacy = DEVPROPKEY(
     Data1=0x80497100,
     Data2=0x8c73,
     Data3=0x48b9,
     Data4=[0xaa, 0xd9, 0xce, 0x38, 0x7e, 0x19, 0xc5, 0x6e],
     pid=3) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_InstanceId = DEVPROPKEY.create(
+DEVPKEY_Device_InstanceId = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=256) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_ContainerId = DEVPROPKEY.create(
+DEVPKEY_Device_ContainerId = DEVPROPKEY(
     Data1=0x8c7ed206,
     Data2=0x3f8a,
     Data3=0x4827,
     Data4=[0xb3, 0xab, 0xae, 0x9e, 0x1f, 0xae, 0xfc, 0x6c],
     pid=2) # DEVPROP_TYPE_GUID
 
-DEVPKEY_Device_ModelId = DEVPROPKEY.create(
+DEVPKEY_Device_ModelId = DEVPROPKEY(
     Data1=0x80d81ea6,
     Data2=0x7473,
     Data3=0x4b0c,
     Data4=[0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b],
     pid=2) # DEVPROP_TYPE_GUID
 
-DEVPKEY_Device_FriendlyNameAttributes = DEVPROPKEY.create(
+DEVPKEY_Device_FriendlyNameAttributes = DEVPROPKEY(
     Data1=0x80d81ea6,
     Data2=0x7473,
     Data3=0x4b0c,
     Data4=[0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b],
     pid=3) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_ManufacturerAttributes = DEVPROPKEY.create(
+DEVPKEY_Device_ManufacturerAttributes = DEVPROPKEY(
     Data1=0x80d81ea6,
     Data2=0x7473,
     Data3=0x4b0c,
     Data4=[0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b],
     pid=4) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_PresenceNotForDevice = DEVPROPKEY.create(
+DEVPKEY_Device_PresenceNotForDevice = DEVPROPKEY(
     Data1=0x80d81ea6,
     Data2=0x7473,
     Data3=0x4b0c,
     Data4=[0x82, 0x16, 0xef, 0xc1, 0x1a, 0x2c, 0x4c, 0x8b],
     pid=5) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Numa_Proximity_Domain = DEVPROPKEY.create(
+DEVPKEY_Numa_Proximity_Domain = DEVPROPKEY(
     Data1=0x540b947e,
     Data2=0x8b40,
     Data3=0x45bc,
     Data4=[0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2],
     pid=1) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_DHP_Rebalance_Policy = DEVPROPKEY.create(
+DEVPKEY_Device_DHP_Rebalance_Policy = DEVPROPKEY(
     Data1=0x540b947e,
     Data2=0x8b40,
     Data3=0x45bc,
     Data4=[0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2],
     pid=2) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_Numa_Node = DEVPROPKEY.create(
+DEVPKEY_Device_Numa_Node = DEVPROPKEY(
     Data1=0x540b947e,
     Data2=0x8b40,
     Data3=0x45bc,
     Data4=[0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2],
     pid=3) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_BusReportedDeviceDesc = DEVPROPKEY.create(
+DEVPKEY_Device_BusReportedDeviceDesc = DEVPROPKEY(
     Data1=0x540b947e,
     Data2=0x8b40,
     Data3=0x45bc,
     Data4=[0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2],
     pid=4) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_SessionId = DEVPROPKEY.create(
+DEVPKEY_Device_SessionId = DEVPROPKEY(
     Data1=0x83da6326,
     Data2=0x97a6,
     Data3=0x4088,
     Data4=[0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29],
     pid=6) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_InstallDate = DEVPROPKEY.create(
+DEVPKEY_Device_InstallDate = DEVPROPKEY(
     Data1=0x83da6326,
     Data2=0x97a6,
     Data3=0x4088,
     Data4=[0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29],
     pid=100) # DEVPROP_TYPE_FILETIME
 
-DEVPKEY_Device_FirstInstallDate = DEVPROPKEY.create(
+DEVPKEY_Device_FirstInstallDate = DEVPROPKEY(
     Data1=0x83da6326,
     Data2=0x97a6,
     Data3=0x4088,
     Data4=[0x94, 0x53, 0xa1, 0x92, 0x3f, 0x57, 0x3b, 0x29],
     pid=101) # DEVPROP_TYPE_FILETIME
 
-DEVPKEY_Device_DriverDate = DEVPROPKEY.create(
+DEVPKEY_Device_DriverDate = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=2) # DEVPROP_TYPE_FILETIME
 
-DEVPKEY_Device_DriverVersion = DEVPROPKEY.create(
+DEVPKEY_Device_DriverVersion = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=3) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverDesc = DEVPROPKEY.create(
+DEVPKEY_Device_DriverDesc = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=4) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverInfPath = DEVPROPKEY.create(
+DEVPKEY_Device_DriverInfPath = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=5) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverInfSection = DEVPROPKEY.create(
+DEVPKEY_Device_DriverInfSection = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=6) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverInfSectionExt = DEVPROPKEY.create(
+DEVPKEY_Device_DriverInfSectionExt = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=7) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_MatchingDeviceId = DEVPROPKEY.create(
+DEVPKEY_Device_MatchingDeviceId = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=8) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverProvider = DEVPROPKEY.create(
+DEVPKEY_Device_DriverProvider = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=9) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverPropPageProvider = DEVPROPKEY.create(
+DEVPKEY_Device_DriverPropPageProvider = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=10) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverCoInstallers = DEVPROPKEY.create(
+DEVPKEY_Device_DriverCoInstallers = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=11) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_Device_ResourcePickerTags = DEVPROPKEY.create(
+DEVPKEY_Device_ResourcePickerTags = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=12) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_ResourcePickerExceptions = DEVPROPKEY.create(
+DEVPKEY_Device_ResourcePickerExceptions = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=13) # DEVPROP_TYPE_STRING
 
-DEVPKEY_Device_DriverRank = DEVPROPKEY.create(
+DEVPKEY_Device_DriverRank = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=14) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_Device_DriverLogoLevel = DEVPROPKEY.create(
+DEVPKEY_Device_DriverLogoLevel = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
@@ -522,35 +523,35 @@ DEVPKEY_Device_DriverLogoLevel = DEVPROPKEY.create(
     pid=15) # DEVPROP_TYPE_UINT32
 
 
-DEVPKEY_Device_NoConnectSound = DEVPROPKEY.create(
+DEVPKEY_Device_NoConnectSound = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=17) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_GenericDriverInstalled = DEVPROPKEY.create(
+DEVPKEY_Device_GenericDriverInstalled = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=18) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_AdditionalSoftwareRequested = DEVPROPKEY.create(
+DEVPKEY_Device_AdditionalSoftwareRequested = DEVPROPKEY(
     Data1=0xa8b865dd,
     Data2=0x2e3d,
     Data3=0x4094,
     Data4=[0xad, 0x97, 0xe5, 0x93, 0xa7, 0xc, 0x75, 0xd6],
     pid=19) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_SafeRemovalRequired = DEVPROPKEY.create(
+DEVPKEY_Device_SafeRemovalRequired = DEVPROPKEY(
     Data1=0xafd97640,
     Data2=0x86a3,
     Data3=0x4210,
     Data4=[0xb6, 0x7c, 0x28, 0x9c, 0x41, 0xaa, 0xbe, 0x55],
     pid=2) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_Device_SafeRemovalRequiredOverride = DEVPROPKEY.create(
+DEVPKEY_Device_SafeRemovalRequiredOverride = DEVPROPKEY(
     Data1=0xafd97640,
     Data2=0x86a3,
     Data3=0x4210,
@@ -558,168 +559,168 @@ DEVPKEY_Device_SafeRemovalRequiredOverride = DEVPROPKEY.create(
     pid=3) # DEVPROP_TYPE_BOOLEAN
 
 
-DEVPKEY_DrvPkg_Model = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_Model = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=2) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DrvPkg_VendorWebSite = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_VendorWebSite = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=3) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DrvPkg_DetailedDescription = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_DetailedDescription = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=4) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DrvPkg_DocumentationLink = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_DocumentationLink = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=5) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DrvPkg_Icon = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_Icon = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=6) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DrvPkg_BrandingIcon = DEVPROPKEY.create(
+DEVPKEY_DrvPkg_BrandingIcon = DEVPROPKEY(
     Data1=0xcf73bb51,
     Data2=0x3abf,
     Data3=0x44a2,
     Data4=[0x85, 0xe0, 0x9a, 0x3d, 0xc7, 0xa1, 0x21, 0x32],
     pid=7) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DeviceClass_UpperFilters = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_UpperFilters = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=19) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DeviceClass_LowerFilters = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_LowerFilters = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=20) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DeviceClass_Security = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_Security = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=25) # DEVPROP_TYPE_SECURITY_DESCRIPTOR
 
-DEVPKEY_DeviceClass_SecuritySDS = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_SecuritySDS = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=26) # DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING
 
-DEVPKEY_DeviceClass_DevType = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_DevType = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=27) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_DeviceClass_Exclusive = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_Exclusive = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=28) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_Characteristics = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_Characteristics = DEVPROPKEY(
     Data1=0x4321918b,
     Data2=0xf69e,
     Data3=0x470d,
     Data4=[0xa5, 0xde, 0x4d, 0x88, 0xc7, 0x5a, 0xd2, 0x4b],
     pid=29) # DEVPROP_TYPE_UINT32
 
-DEVPKEY_DeviceClass_Name = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_Name = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=2) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_ClassName = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_ClassName = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=3) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_Icon = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_Icon = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=4) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_ClassInstaller = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_ClassInstaller = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=5) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_PropPageProvider = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_PropPageProvider = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=6) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_NoInstallClass = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_NoInstallClass = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=7) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_NoDisplayClass = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_NoDisplayClass = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=8) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_SilentInstall = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_SilentInstall = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=9) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_NoUseClass = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_NoUseClass = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=10) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_DefaultService = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_DefaultService = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
     Data4=[0xaf, 0x8, 0x68, 0xc9, 0xa7, 0xd7, 0x33, 0x66],
     pid=11) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceClass_IconPath = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_IconPath = DEVPROPKEY(
     Data1=0x259abffc,
     Data2=0x50a7,
     Data3=0x47ce,
@@ -727,84 +728,84 @@ DEVPKEY_DeviceClass_IconPath = DEVPROPKEY.create(
     pid=12) # DEVPROP_TYPE_STRING_LIST
 
 
-DEVPKEY_DeviceClass_DHPRebalanceOptOut = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_DHPRebalanceOptOut = DEVPROPKEY(
     Data1=0xd14d3ef3,
     Data2=0x66cf,
     Data3=0x4ba2,
     Data4=[0x9d, 0x38, 0x0d, 0xdb, 0x37, 0xab, 0x47, 0x01],
     pid=2) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceClass_ClassCoInstallers = DEVPROPKEY.create(
+DEVPKEY_DeviceClass_ClassCoInstallers = DEVPROPKEY(
     Data1=0x713d1703,
     Data2=0xa2e2,
     Data3=0x49f5,
     Data4=[0x92, 0x14, 0x56, 0x47, 0x2e, 0xf3, 0xda, 0x5c],
     pid=2) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DeviceInterface_FriendlyName = DEVPROPKEY.create(
+DEVPKEY_DeviceInterface_FriendlyName = DEVPROPKEY(
     Data1=0x026e516e,
     Data2=0xb814,
     Data3=0x414b,
     Data4=[0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22],
     pid=2) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceInterface_Enabled = DEVPROPKEY.create(
+DEVPKEY_DeviceInterface_Enabled = DEVPROPKEY(
     Data1=0x026e516e,
     Data2=0xb814,
     Data3=0x414b,
     Data4=[0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22],
     pid=3) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceInterface_ClassGuid = DEVPROPKEY.create(
+DEVPKEY_DeviceInterface_ClassGuid = DEVPROPKEY(
     Data1=0x026e516e,
     Data2=0xb814,
     Data3=0x414b,
     Data4=[0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22],
     pid=4) # DEVPROP_TYPE_GUID
 
-DEVPKEY_DeviceInterfaceClass_DefaultInterface = DEVPROPKEY.create(
+DEVPKEY_DeviceInterfaceClass_DefaultInterface = DEVPROPKEY(
     Data1=0x14c83a99,
     Data2=0x0b3f,
     Data3=0x44b7,
     Data4=[0xbe, 0x4c, 0xa1, 0x78, 0xd3, 0x99, 0x05, 0x64],
     pid=2) # DEVPROP_TYPE_STRING
 
-DEVPKEY_DeviceDisplay_IsShowInDisconnectedState = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_IsShowInDisconnectedState = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=0x44) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceDisplay_IsNotInterestingForDisplay = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_IsNotInterestingForDisplay = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=0x4a) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceDisplay_Category = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_Category = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=0x5a) # DEVPROP_TYPE_STRING_LIST
 
-DEVPKEY_DeviceDisplay_UnpairUninstall = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_UnpairUninstall = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=0x62) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceDisplay_RequiresUninstallElevation = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_RequiresUninstallElevation = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
     Data4=[0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57],
     pid=0x63) # DEVPROP_TYPE_BOOLEAN
 
-DEVPKEY_DeviceDisplay_AlwaysShowDeviceAsConnected = DEVPROPKEY.create(
+DEVPKEY_DeviceDisplay_AlwaysShowDeviceAsConnected = DEVPROPKEY(
     Data1=0x78c34fc8,
     Data2=0x104a,
     Data3=0x4aca,
