@@ -188,5 +188,10 @@ class DeviceManager(object):
         return devices
 
     @property
+    def volumes(self):
+        with self._open_handle(constants.GENVOLUME_GUID_STRING) as handle:
+            return self.get_devices_from_handle(handle)
+
+    @property
     def root(self):
         return Device(ROOT_INSTANCE_ID)
