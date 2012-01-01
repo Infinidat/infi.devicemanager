@@ -49,6 +49,10 @@ class Device(object):
         return self._get_setupapi_property(properties.DEVPKEY_Device_HardwareIds)
 
     @property
+    def instance_id(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_InstanceId)
+
+    @property
     def psuedo_device_object(self):
         return GLOBALROOT + self._get_setupapi_property(properties.DEVPKEY_Device_PDOName)
 
