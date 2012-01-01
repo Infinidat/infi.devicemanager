@@ -17,7 +17,7 @@ def ioctl_storage_get_device_number(handle):
     string = ctypes.c_buffer('\x00' * size, size)
     _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
     instance = structures.STORAGE_DEVICE_NUMBER.create_from_string(string)
-    return instance.DeviceNumber
+    return (instance.DeviceNumber, instance.PartitionNumber,)
 
 def ioctl_disk_get_drive_geometry_ex(handle):
     size = _sizeof(structures.DISK_GEOMETRY_EX)
@@ -43,6 +43,10 @@ class DeviceIoControl(infi.wioctl.DeviceIoControl):
 
     def storage_get_device_number(self):
         """:returns: the %d from PhysicalDriveX"""
+        with infi.wioctl.open_handle(self.device_path) as handle:
+            return ioctl_storage_get_device_number(handle)[0]
+
+    def storage_get_device_and_partition_number(self):
         with infi.wioctl.open_handle(self.device_path) as handle:
             return ioctl_storage_get_device_number(handle)
 
