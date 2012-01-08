@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from infi.exceptools import chain
 from .setupapi import functions, properties, constants
 from .ioctl import DeviceIoControl
+from infi.pyutils.lazy import cached_method
 
 ROOT_INSTANCE_ID = u"HTREE\\ROOT\\0"
 GLOBALROOT = u"\\\\?\\GLOBALROOT"
@@ -24,6 +25,7 @@ class Device(object):
             if dis is None:
                 functions.SetupDiDestroyDeviceInfoList(dis)
 
+    @cached_method
     def _get_setupapi_property(self, key):
         from .setupapi import WindowsException
         with self._open_handle() as handle:
@@ -115,6 +117,7 @@ class Device(object):
             pass
         return False
 
+    @cached_method
     def get_available_property_ids(self):
         result = []
         with self._open_handle() as handle:
