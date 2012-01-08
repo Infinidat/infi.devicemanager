@@ -158,7 +158,9 @@ class Property(object):
             return unicode(self._buffer, encoding="utf-16")[:-1].split(unichr(0))[:-1]
         if self._type in [properties.DEVPROP_TYPE_GUID]:
             return GUID.create_from_string(self._buffer)
-        if self._type in [properties.DEVPROP_TYPE_UINT32]:
+        if self._type in [properties.DEVPROP_TYPE_UINT32,
+                          properties.DEVPROP_TYPE_ERROR,
+                          properties.DEVPROP_TYPE_NTSTATUS]:
             class Value(Struct):
                 _fields_ = [ULInt32("value")]
             return Value.create_from_string(self._buffer).value
