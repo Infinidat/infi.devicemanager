@@ -14,6 +14,9 @@ class Device(object):
         super(Device, self).__init__()
         self._instance_id = instance_id
 
+    def __repr__(self):
+        return "<{} ({})>".format(self.friendly_name, self.description)
+
     @contextmanager
     def _open_handle(self):
         dis, devinfo = None, None
@@ -139,6 +142,9 @@ class DeviceManager(object):
     def __init__(self):
         super(DeviceManager, self).__init__()
         self._dis_list = []
+
+    def __repr__(self):
+        return "<DeviceManager>"
 
     @contextmanager
     def _open_handle(self, guid_string):
