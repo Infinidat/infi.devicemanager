@@ -28,7 +28,6 @@ class Device(object):
             if dis is None:
                 functions.SetupDiDestroyDeviceInfoList(dis)
 
-    @cached_method
     def _get_setupapi_property(self, key):
         from .setupapi import WindowsException
         with self._open_handle() as handle:
@@ -41,47 +40,58 @@ class Device(object):
                 chain(exception)
 
     @property
+    @cached_method
     def class_guid(self):
         guid = self._get_setupapi_property(properties.DEVPKEY_Device_ClassGuid)
         return functions.guid_to_pretty_string(guid)
 
     @property
+    @cached_method
     def description(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_DeviceDesc)
 
     @property
+    @cached_method
     def hardware_ids(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_HardwareIds)
 
     @property
+    @cached_method
     def instance_id(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_InstanceId)
 
     @property
+    @cached_method
     def psuedo_device_object(self):
         return GLOBALROOT + self._get_setupapi_property(properties.DEVPKEY_Device_PDOName)
 
     @property
+    @cached_method
     def friendly_name(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_FriendlyName)
 
     @property
+    @cached_method
     def location_paths(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_LocationPaths)
 
     @property
+    @cached_method
     def location(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_LocationInfo)
 
     @property
+    @cached_method
     def bus_number(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_BusNumber)
 
     @property
+    @cached_method
     def ui_number(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_UINumber)
 
     @property
+    @cached_method
     def address(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_Address)
 
@@ -103,6 +113,7 @@ class Device(object):
         return Device(instance_id)
 
     @property
+    @cached_method
     def instance_id(self):
         return self._instance_id
 
