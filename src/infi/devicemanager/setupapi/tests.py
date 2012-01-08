@@ -1,7 +1,9 @@
 
 from infi import unittest
-from logging import debug
+from logging import getLogger
 import mock
+
+log = getLogger()
 
 class StructuresTestCase(unittest.TestCase):
     def test_guid_converison(self):
@@ -53,6 +55,6 @@ class FunctionTestCase(unittest.TestCase):
         device_info_set = SetupDiGetClassDevs()
         for devinfo in SetupDiEnumDeviceInfo(device_info_set):
             for key in SetupDiGetDevicePropertyKeys(device_info_set, devinfo):
-                debug(key)
+                log.debug(key)
                 property = SetupDiGetDeviceProperty(device_info_set, devinfo, key)
                 value = property.python_object
