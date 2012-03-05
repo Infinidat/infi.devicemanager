@@ -1,4 +1,4 @@
-from infi.crap import WrappedFunction, IN, OUT, IN_OUT
+from infi.cwrap import WrappedFunction, IN, OUT, IN_OUT
 from ctypes import c_void_p, c_ulong, c_long
 
 HANDLE = c_void_p

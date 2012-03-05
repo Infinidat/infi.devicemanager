@@ -1,5 +1,5 @@
 
-from infi.crap import WrappedFunction, IN, IN_OUT
+from infi.cwrap import WrappedFunction, IN, IN_OUT
 from ctypes import c_buffer, create_unicode_buffer, byref, c_ulong, c_void_p
 
 DWORD = c_ulong
