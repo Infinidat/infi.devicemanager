@@ -11,7 +11,7 @@ def ioctl_scsi_get_address(handle):
     string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size)
     try:
         _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
-    except infi.wioctl.errors.WindowsError, exception:
+    except infi.wioctl.errors.WindowsException, exception:
         if exception.winerror == infi.wioctl.constants.ERROR_ACCESS_DENIED:
             raise chain(infi.wioctl.errors.InvalidHandle(exception.winerror))
     instance = structures.SCSI_ADDRESS.create_from_string(string)
