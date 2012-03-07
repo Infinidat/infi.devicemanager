@@ -35,7 +35,7 @@ def ioctl_disk_get_drive_geometry_ex(handle):
         if e.winerror != infi.wioctl.constants.ERROR_INSUFFICIENT_BUFFER:
             raise
     instance = structures.DISK_GEOMETRY_EX.create_from_string(string).DiskSize
-    return instance.QuadPart if structures.is_64bit() else instance.HighPart << 32 + instance.LowPart
+    return instance.QuadPart if structures.is_64bit() else (instance.HighPart << 32) + instance.LowPart
 
 def _sizeof(struct):
     return struct.min_max_sizeof().max
