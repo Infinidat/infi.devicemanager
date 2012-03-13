@@ -37,7 +37,7 @@ class TestCase(unittest.TestCase):
             try:
                 size = DeviceIoControl(disk.psuedo_device_object).disk_get_drive_geometry_ex()
                 self.assertTrue(isinstance(size, int) or isinstance(size, long))
-            except info.wioctl.errors.WindowsException, error:
+            except infi.wioctl.errors.WindowsException, error:
                 if error.winerror == 1:
                     # If there is MPIO disk, we cannot do IOCTLs on underlying SCSI disks
                     continue
