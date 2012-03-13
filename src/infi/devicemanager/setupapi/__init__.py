@@ -1,12 +1,13 @@
 from infi.cwrap import WrappedFunction, IN, OUT, IN_OUT
 from ctypes import c_void_p, c_ulong, c_long
+from infi.exceptools import InfiException
 
 HANDLE = c_void_p
 HWND = HANDLE
 DWORD = c_ulong
 BOOL = c_long
 
-class WindowsException(Exception):
+class WindowsException(InfiException):
     def __init__(self, errno):
         from ctypes import FormatError
         self.winerror = errno

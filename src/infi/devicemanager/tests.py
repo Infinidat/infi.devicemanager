@@ -3,7 +3,7 @@ import unittest
 import mock
 
 from . import DeviceManager
-from .ioctl import DeviceIoControl
+from .ioctl import DeviceIoControl, wioctl
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -33,8 +33,15 @@ class TestCase(unittest.TestCase):
             scsi_address = DeviceIoControl(disk.psuedo_device_object).scsi_get_address()
             device_number = DeviceIoControl(disk.psuedo_device_object).storage_get_device_number()
             self.assertTrue(isinstance(device_number, int) or isinstance(device_number, long))
-            size = DeviceIoControl(disk.psuedo_device_object).disk_get_drive_geometry_ex()
-            self.assertTrue(isinstance(size, int) or isinstance(size, long))
+            try:
+                size = DeviceIoControl(disk.psuedo_device_object).disk_get_drive_geometry_ex()
+                self.assertTrue(isinstance(size, int) or isinstance(size, long))
+            except wioctls.errors.WindowsException, error:
+                if error.winerror == 1:
+                    # If there is MPIO disk, we cannot do IOCTLs on underlying SCSI disks
+                    continue
+                else:
+                    raise
 
     def test_list_properties(self):
         dm = DeviceManager()
