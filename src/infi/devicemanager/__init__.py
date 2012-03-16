@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from infi.exceptools import chain
 from .setupapi import functions, properties, constants
 from .ioctl import DeviceIoControl
+from infi.pyutils.lazy import cached_method
 
 ROOT_INSTANCE_ID = u"HTREE\\ROOT\\0"
 GLOBALROOT = u"\\\\?\\GLOBALROOT"
@@ -12,6 +13,9 @@ class Device(object):
     def __init__(self, instance_id):
         super(Device, self).__init__()
         self._instance_id = instance_id
+
+    def __repr__(self):
+        return "<{}>".format(self.friendly_name if self.has_property("friendly_name")else self.description)
 
     @contextmanager
     def _open_handle(self):
@@ -36,47 +40,58 @@ class Device(object):
                 chain(exception)
 
     @property
+    @cached_method
     def class_guid(self):
         guid = self._get_setupapi_property(properties.DEVPKEY_Device_ClassGuid)
         return functions.guid_to_pretty_string(guid)
 
     @property
+    @cached_method
     def description(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_DeviceDesc)
 
     @property
+    @cached_method
     def hardware_ids(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_HardwareIds)
 
     @property
+    @cached_method
     def instance_id(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_InstanceId)
 
     @property
+    @cached_method
     def psuedo_device_object(self):
         return GLOBALROOT + self._get_setupapi_property(properties.DEVPKEY_Device_PDOName)
 
     @property
+    @cached_method
     def friendly_name(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_FriendlyName)
 
     @property
+    @cached_method
     def location_paths(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_LocationPaths)
 
     @property
+    @cached_method
     def location(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_LocationInfo)
 
     @property
+    @cached_method
     def bus_number(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_BusNumber)
 
     @property
+    @cached_method
     def ui_number(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_UINumber)
 
     @property
+    @cached_method
     def address(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_Address)
 
@@ -98,6 +113,7 @@ class Device(object):
         return Device(instance_id)
 
     @property
+    @cached_method
     def instance_id(self):
         return self._instance_id
 
@@ -115,6 +131,7 @@ class Device(object):
             pass
         return False
 
+    @cached_method
     def get_available_property_ids(self):
         result = []
         with self._open_handle() as handle:
@@ -136,6 +153,9 @@ class DeviceManager(object):
     def __init__(self):
         super(DeviceManager, self).__init__()
         self._dis_list = []
+
+    def __repr__(self):
+        return "<DeviceManager>"
 
     @contextmanager
     def _open_handle(self, guid_string):

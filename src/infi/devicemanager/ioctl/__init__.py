@@ -1,6 +1,7 @@
 
 import infi.wioctl
 from . import structures, constants
+from infi.exceptools import chain
 import ctypes
 
 def ioctl_scsi_get_address(handle):
@@ -8,7 +9,11 @@ def ioctl_scsi_get_address(handle):
     instance = structures.SCSI_ADDRESS.create_from_string('\x00' * size)
     instance.Length = size
     string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size)
-    _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
+    try:
+        _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
+    except infi.wioctl.errors.WindowsException, exception:
+        if exception.winerror == infi.wioctl.constants.ERROR_ACCESS_DENIED:
+            raise chain(infi.wioctl.errors.InvalidHandle(exception.winerror))
     instance = structures.SCSI_ADDRESS.create_from_string(string)
     return (instance.PortNumber, instance.PathId, instance.TargetId, instance.Lun)
 
@@ -30,7 +35,7 @@ def ioctl_disk_get_drive_geometry_ex(handle):
         if e.winerror != infi.wioctl.constants.ERROR_INSUFFICIENT_BUFFER:
             raise
     instance = structures.DISK_GEOMETRY_EX.create_from_string(string).DiskSize
-    return instance.QuadPart if structures.is_64bit() else instance.HighPart << 32 + instance.LowPart
+    return instance.QuadPart if structures.is_64bit() else (instance.HighPart << 32) + instance.LowPart
 
 def _sizeof(struct):
     return struct.min_max_sizeof().max
