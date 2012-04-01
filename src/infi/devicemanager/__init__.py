@@ -63,7 +63,10 @@ class Device(object):
     @property
     @cached_method
     def psuedo_device_object(self):
-        return GLOBALROOT + self._get_setupapi_property(properties.DEVPKEY_Device_PDOName)
+        value = self._get_setupapi_property(properties.DEVPKEY_Device_PDOName)
+        if value is None:
+            raise KeyError(properties.DEVPKEY_Device_PDOName)
+        return GLOBALROOT + value
 
     @property
     @cached_method
