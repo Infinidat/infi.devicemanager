@@ -1,10 +1,10 @@
 
 import infi.wioctl
+from . import structures, constants
 from infi.exceptools import chain
 import ctypes
 
 def ioctl_scsi_get_address(handle):
-    from . import structures
     size = _sizeof(structures.SCSI_ADDRESS)
     instance = structures.SCSI_ADDRESS.create_from_string('\x00' * size)
     instance.Length = size
@@ -18,7 +18,6 @@ def ioctl_scsi_get_address(handle):
     return (instance.PortNumber, instance.PathId, instance.TargetId, instance.Lun)
 
 def ioctl_storage_get_device_number(handle):
-    from . import structures
     size = _sizeof(structures.STORAGE_DEVICE_NUMBER)
     string = ctypes.c_buffer('\x00' * size, size)
     _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
@@ -26,7 +25,6 @@ def ioctl_storage_get_device_number(handle):
     return (instance.DeviceNumber, instance.PartitionNumber,)
 
 def ioctl_disk_get_drive_geometry_ex(handle):
-    from . import structures
     size = _sizeof(structures.DISK_GEOMETRY_EX)
     string = ctypes.c_buffer('\x00' * size, size)
     try:
