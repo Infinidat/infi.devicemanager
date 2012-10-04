@@ -120,11 +120,19 @@ class Device(object):
     def instance_id(self):
         return self._instance_id
 
+    @property
+    @cached_method
+    def devnode_status(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_DevNodeStatus)
+
     def is_root(self):
         return self._instance_id == ROOT_INSTANCE_ID
 
     def is_real_device(self):
         return self.has_property("location")
+
+    def is_hidden(self):
+        return bool(self.devnode_status & constants.DN_NO_SHOW_IN_DM)
 
     def has_property(self, name):
         try:
