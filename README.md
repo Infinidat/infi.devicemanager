@@ -19,14 +19,11 @@ names = [disk.friendly_name for disk in disks]
 Checking out the code
 =====================
 
-This project uses buildout, and git to generate setup.py and __version__.py.
-In order to generate these, run:
+This project uses buildout and infi-projector, and git to generate setup.py and __version__.py.
+In order to generate these, first get infi-projector:
 
-    python -S bootstrap.py -d -t
-    bin/buildout -c buildout-version.cfg
-    python setup.py develop
+    easy_install infi.projector
 
-In our development environment, we use isolated python builds, by running the following instead of the last command:
+    and then run in the project directory:
 
-    bin/buildout install development-scripts
-
+        projector devenv build
