@@ -37,6 +37,21 @@ def ioctl_disk_get_drive_geometry_ex(handle):
     instance = structures.DISK_GEOMETRY_EX.create_from_string(string).DiskSize
     return instance.QuadPart if structures.is_64bit() else (instance.HighPart << 32) + instance.LowPart
 
+def ioctl_volume_get_volume_disk_extents(handle):
+    size = structures.VOLUME_DISK_EXTENTS.min_max_sizeof().min + _sizeof(structures.DISK_EXTENT)
+    string = ctypes.c_buffer('\x00' * size, size)
+    try:
+        infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, 0, 0, string, size)
+    except infi.wioctl.api.WindowsException, e:
+        if e.winerror != infi.wioctl.constants.ERROR_MORE_DATA:
+            raise
+    count = structures.DWORD.create_from_string(string)
+    size = size + ((count - 1) *_sizeof(structures.DISK_EXTENT))
+    string = ctypes.c_buffer('\x00' * size, size)
+    infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, 0, 0, string, size)
+    instance = structures.VOLUME_DISK_EXTENTS.create_from_string(string)
+    return instance.Extents
+
 def _sizeof(struct):
     return struct.min_max_sizeof().max
 
@@ -59,3 +74,7 @@ class DeviceIoControl(infi.wioctl.DeviceIoControl):
         """:returns: size in bytes of device"""
         with infi.wioctl.open_handle(self.device_path) as handle:
             return ioctl_disk_get_drive_geometry_ex(handle)
+
+    def get_volume_disk_extents(self):
+        with infi.wioctl.open_handle(self.device_path) as handle:
+            return ioctl_volume_get_volume_disk_extents(handle)
