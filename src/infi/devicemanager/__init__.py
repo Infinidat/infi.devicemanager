@@ -48,7 +48,10 @@ class Device(object):
     @property
     @cached_method
     def description(self):
-        return self._get_setupapi_property(properties.DEVPKEY_Device_DeviceDesc)
+        try:
+            return self._get_setupapi_property(properties.DEVPKEY_Device_DeviceDesc)
+        except KeyError:
+            return 'description unavailable'
 
     @property
     @cached_method
