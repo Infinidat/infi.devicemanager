@@ -179,6 +179,7 @@ class Property(object):
         if self._type in [properties.DEVPROP_TYPE_SECURITY_DESCRIPTOR_STRING]:
             sd_buffer = c_buffer('\x00' * SECURITY_DESCRIPTOR.min_max_sizeof().max)
             ConvertSDDL(c_buffer(self._buffer), SDDL_REVISION_1, sd_buffer, 0)
+            # TODO requires to call LocalFree
             return SECURITY_DESCRIPTOR.create_from_string(sd_buffer)
         log = debug("{!r}. {!r}, {!r}".format(self._buffer, self._type, self._key))
         raise ValueError(self._buffer, self._type)
