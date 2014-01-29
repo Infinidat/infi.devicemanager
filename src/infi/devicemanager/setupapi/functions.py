@@ -81,8 +81,8 @@ def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     try:
         interface(device_info_set, device_info_buffer, 0, 0, byref(required_key_count), 0)
     except WindowsException, exception:
-        if exception.winerror == ERROR_INSUFFICIENT_BUFFER:
-            pass
+        if exception.winerror != ERROR_INSUFFICIENT_BUFFER:
+            raise
 
     class PropertyKeyArray(Struct):
         _fields_ = [FixedSizeArray("keys", required_key_count.value, DEVPROPKEY)]
@@ -103,8 +103,8 @@ def SetupDiGetDeviceProperty(device_info_set, devinfo_data, property_key):
         interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
                   0, 0, byref(required_size), 0)
     except WindowsException, exception:
-        if exception.winerror == ERROR_INSUFFICIENT_BUFFER:
-            pass
+        if exception.winerror != ERROR_INSUFFICIENT_BUFFER:
+            raise
 
     value_buffer = c_buffer(required_size.value)
     interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
