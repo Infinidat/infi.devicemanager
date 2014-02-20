@@ -25,7 +25,7 @@ class Device(object):
             devinfo = functions.SetupDiOpenDeviceInfo(dis, self._instance_id)
             yield (dis, devinfo)
         finally:
-            if dis is None:
+            if dis is not None:
                 functions.SetupDiDestroyDeviceInfoList(dis)
 
     def _get_setupapi_property(self, key):
