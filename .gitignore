@@ -41,3 +41,4 @@ src/infi/devicemanager/__version__.py
 bootstrap.py
 .cache
 eggs
+parts
