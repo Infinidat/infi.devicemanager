@@ -39,3 +39,6 @@ src/infi/hello/__version__.py
 
 src/infi/devicemanager/__version__.py
 bootstrap.py
+.cache
+eggs
+parts
