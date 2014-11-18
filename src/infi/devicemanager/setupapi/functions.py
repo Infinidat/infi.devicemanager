@@ -1,5 +1,6 @@
 
 from infi.exceptools import chain
+from infi.pyutils.decorators import wraps
 from ctypes import c_buffer, byref
 from .constants import DIGCF_PRESENT, DIGCF_ALLCLASSES, DIOD_INHERIT_CLASSDRVS
 from .constants import ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND, ERROR_INSUFFICIENT_BUFFER
@@ -45,6 +46,7 @@ def SetupDiGetClassDevs(guid_string=None, enumerator_string=None, parent_handle=
     return interface(guid_buffer, enumerator_buffer, parent_handle, flags)
 
 def generator(decorated_func):
+    @wraps(decorated_func)
     def callee(*args, **kwargs):
         from . import WindowsException
         index = 0
@@ -57,14 +59,10 @@ def generator(decorated_func):
                 if exception.winerror in [ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND]: # TODO why ERROR_BAD_COMMAND?
                     raise StopIteration
                 chain(exception)
-
-    callee.__name__ = decorated_func.__name__
-    callee.__doc__ = decorated_func.__doc__
-    callee.__dict__ = decorated_func.__dict__
     return callee
 
 @generator
-def SetupDiEnumDeviceInfo(device_info_set, index):
+def SetupDiEnumDeviceInfo(device_info_set, index=0):
     from . import SetupDiEnumDeviceInfo as interface
     device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
