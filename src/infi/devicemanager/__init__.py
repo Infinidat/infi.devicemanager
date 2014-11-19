@@ -5,9 +5,12 @@ from infi.exceptools import chain
 from .setupapi import functions, properties, constants
 from .ioctl import DeviceIoControl
 from infi.pyutils.lazy import cached_method
+from logging import getLogger
 
 ROOT_INSTANCE_ID = u"HTREE\\ROOT\\0"
 GLOBALROOT = u"\\\\?\\GLOBALROOT"
+logger = getLogger(__name__)
+
 
 class Device(object):
     def __init__(self, instance_id):
@@ -163,6 +166,7 @@ class Device(object):
             machine_handle, device_handle = handle
             _ = CM_Reenumerate_DevNode_Ex(device_handle, 0, machine_handle)
 
+
 class DeviceManager(object):
     def __init__(self):
         super(DeviceManager, self).__init__()
@@ -184,7 +188,11 @@ class DeviceManager(object):
     def get_devices_from_handle(self, handle):
         devices = []
         for devinfo in functions.SetupDiEnumDeviceInfo(handle):
-            instance_id = functions.SetupDiGetDeviceProperty(handle, devinfo, properties.DEVPKEY_Device_InstanceId)
+            try:
+                instance_id = functions.SetupDiGetDeviceProperty(handle, devinfo, properties.DEVPKEY_Device_InstanceId)
+            except:
+                logger.exception("failed to get DEVPKEY_Device_InstanceId from device {!r} by handle {!r}".format(handle, devinfo))
+                continue
             devices.append(Device(instance_id.python_object))
         return devices
 
@@ -195,9 +203,6 @@ class DeviceManager(object):
 
     @property
     def disk_drives(self):
-        # with self._open_handle(constants.GENDISK_GUID_STRING) as handle:
-        #     return self.get_devices_from_handle(handle)
-        # doing it this way returns InstanceIDs in upper case
         disk_drives = []
         for controller in self.storage_controllers:
             def match_class_guid(device):
