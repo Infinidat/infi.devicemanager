@@ -55,7 +55,7 @@ def generator(decorated_func):
                 kwargs["index"] = index
                 yield decorated_func(*args, **kwargs)
                 index += 1
-            except WindowsException, exception:
+            except WindowsException as exception:
                 if exception.winerror in [ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND]: # TODO why ERROR_BAD_COMMAND?
                     raise StopIteration
                 chain(exception)
@@ -64,9 +64,9 @@ def generator(decorated_func):
 @generator
 def SetupDiEnumDeviceInfo(device_info_set, index=0):
     from . import SetupDiEnumDeviceInfo as interface
-    device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = bytes(c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max))
     interface(device_info_set, index, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -78,14 +78,14 @@ def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(devinfo_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     try:
         interface(device_info_set, device_info_buffer, 0, 0, byref(required_key_count), 0)
-    except WindowsException, exception:
+    except WindowsException as exception:
         if exception.winerror != ERROR_INSUFFICIENT_BUFFER:
             raise
 
     class PropertyKeyArray(Struct):
         _fields_ = [FixedSizeArray("keys", required_key_count.value, DEVPROPKEY)]
 
-    keys_buffer = c_buffer('\x00' * PropertyKeyArray.min_max_sizeof().max, PropertyKeyArray.min_max_sizeof().max)
+    keys_buffer = c_buffer(b'\x00' * PropertyKeyArray.min_max_sizeof().max, PropertyKeyArray.min_max_sizeof().max)
     interface(device_info_set, device_info_buffer, keys_buffer, required_key_count,
               byref(required_key_count), 0)
     return PropertyKeyArray.create_from_string(keys_buffer).keys
@@ -100,7 +100,7 @@ def SetupDiGetDeviceProperty(device_info_set, devinfo_data, property_key):
     try:
         interface(device_info_set, device_info_buffer, property_key_buffer, byref(value_type),
                   0, 0, byref(required_size), 0)
-    except WindowsException, exception:
+    except WindowsException as exception:
         if exception.winerror != ERROR_INSUFFICIENT_BUFFER:
             raise
 
@@ -114,9 +114,9 @@ def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASS
     from ctypes import create_unicode_buffer
 
     instance_id_buffer = create_unicode_buffer(instance_id)
-    device_info_data = SP_DEVINFO_DATA.create_from_string('\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = bytes(c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max))
     interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -151,9 +151,9 @@ class Property(object):
         from . import ConvertStringSecurityDescriptorToSecurityDescriptorW as ConvertSDDL
         from .constants import SDDL_REVISION_1
         if self._type in [properties.DEVPROP_TYPE_STRING]:
-            return unicode(self._buffer, encoding="utf-16")[:-1]
+            return self._buffer.decode("utf-16")[:-1]
         if self._type in [properties.DEVPROP_TYPE_STRING_LIST]:
-            return unicode(self._buffer, encoding="utf-16")[:-1].split(unichr(0))[:-1]
+            return self._buffer.decode("utf-16")[:-1].split(unichr(0))[:-1]
         if self._type in [properties.DEVPROP_TYPE_GUID]:
             return GUID.create_from_string(self._buffer)
         if self._type in [properties.DEVPROP_TYPE_UINT32,
@@ -181,4 +181,3 @@ class Property(object):
             return SECURITY_DESCRIPTOR.create_from_string(sd_buffer)
         log = debug("{!r}. {!r}, {!r}".format(self._buffer, self._type, self._key))
         raise ValueError(self._buffer, self._type)
-
