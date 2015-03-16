@@ -17,6 +17,8 @@ SETUP_INFO = dict(
         "License :: OSI Approved :: Python Software Foundation License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 
@@ -45,4 +47,3 @@ def setup():
 
 if __name__ == '__main__':
     setup()
-
