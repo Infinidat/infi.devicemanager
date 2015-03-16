@@ -66,7 +66,7 @@ def SetupDiEnumDeviceInfo(device_info_set, index=0):
     from . import SetupDiEnumDeviceInfo as interface
     device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = bytes(c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max))
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, index, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -116,7 +116,7 @@ def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASS
     instance_id_buffer = create_unicode_buffer(instance_id)
     device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = bytes(c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max))
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
     interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
