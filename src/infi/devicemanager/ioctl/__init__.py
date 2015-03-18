@@ -8,7 +8,7 @@ def ioctl_scsi_get_address(handle):
     size = _sizeof(structures.SCSI_ADDRESS)
     instance = structures.SCSI_ADDRESS.create_from_string(b'\x00' * size)
     instance.Length = size
-    string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size)
+    string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size).raw
     try:
         _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
     except infi.wioctl.errors.WindowsException as exception:
@@ -19,14 +19,14 @@ def ioctl_scsi_get_address(handle):
 
 def ioctl_storage_get_device_number(handle):
     size = _sizeof(structures.STORAGE_DEVICE_NUMBER)
-    string = ctypes.c_buffer(b'\x00' * size, size)
+    string = ctypes.c_buffer(b'\x00' * size, size).raw
     _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
     instance = structures.STORAGE_DEVICE_NUMBER.create_from_string(string)
     return (instance.DeviceNumber, instance.PartitionNumber,)
 
 def ioctl_disk_get_drive_geometry_ex(handle):
     size = _sizeof(structures.DISK_GEOMETRY_EX)
-    string = ctypes.c_buffer('\x00' * size, size)
+    string = ctypes.c_buffer(b'\x00' * size, size).raw
     try:
         # this IOCTL expects a variable-length buffer for storing infomation about partitions
         # we don't care about that, so we send a short buffer on purpose. this raises an exception
