@@ -24,7 +24,7 @@ def pretty_string_to_guid(pretty_string):
 
 def guid_to_pretty_string(guid):
     from binascii import hexlify
-    pretty_string = hexlify(GUID.write_to_string(guid)).upper()
+    pretty_string = hexlify(GUID.write_to_string(guid)).upper().decode('ASCII')
     pretty_string = pretty_string[0:2][::-1] + pretty_string[2:4][::-1] + pretty_string[4:6][::-1] + \
                     pretty_string[6:8][::-1] + pretty_string[8:10][::-1] + pretty_string[10:12][::-1] + \
                     pretty_string[12:14][::-1] + pretty_string[14:16][::-1] + pretty_string[16:]
@@ -66,7 +66,7 @@ def SetupDiEnumDeviceInfo(device_info_set, index=0):
     from . import SetupDiEnumDeviceInfo as interface
     device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max).raw
     interface(device_info_set, index, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -85,7 +85,7 @@ def SetupDiGetDevicePropertyKeys(device_info_set, devinfo_data):
     class PropertyKeyArray(Struct):
         _fields_ = [FixedSizeArray("keys", required_key_count.value, DEVPROPKEY)]
 
-    keys_buffer = c_buffer(b'\x00' * PropertyKeyArray.min_max_sizeof().max, PropertyKeyArray.min_max_sizeof().max)
+    keys_buffer = c_buffer(b'\x00' * PropertyKeyArray.min_max_sizeof().max, PropertyKeyArray.min_max_sizeof().max).raw
     interface(device_info_set, device_info_buffer, keys_buffer, required_key_count,
               byref(required_key_count), 0)
     return PropertyKeyArray.create_from_string(keys_buffer).keys
@@ -116,7 +116,7 @@ def SetupDiOpenDeviceInfo(device_info_set, instance_id, flags=DIOD_INHERIT_CLASS
     instance_id_buffer = create_unicode_buffer(instance_id)
     device_info_data = SP_DEVINFO_DATA.create_from_string(b'\x00' * SP_DEVINFO_DATA.min_max_sizeof().max)
     device_info_data.cbSize = SP_DEVINFO_DATA.min_max_sizeof().max
-    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max)
+    device_info_buffer = c_buffer(SP_DEVINFO_DATA.write_to_string(device_info_data), SP_DEVINFO_DATA.min_max_sizeof().max).raw
     interface(device_info_set, instance_id_buffer, 0, flags, device_info_buffer)
     return SP_DEVINFO_DATA.create_from_string(device_info_buffer)
 
@@ -153,7 +153,7 @@ class Property(object):
         if self._type in [properties.DEVPROP_TYPE_STRING]:
             return self._buffer.decode("utf-16")[:-1]
         if self._type in [properties.DEVPROP_TYPE_STRING_LIST]:
-            return self._buffer.decode("utf-16")[:-1].split(unichr(0))[:-1]
+            return self._buffer.decode("utf-16")[:-1].split(chr(0))[:-1]
         if self._type in [properties.DEVPROP_TYPE_GUID]:
             return GUID.create_from_string(self._buffer)
         if self._type in [properties.DEVPROP_TYPE_UINT32,

@@ -1,9 +1,16 @@
 
 import unittest
 import mock
+import sys
 
 from . import DeviceManager
 from .ioctl import DeviceIoControl
+
+if sys.version_info[0] == 2:
+    _STRING_INSTANCE = basestring
+else:
+    _STRING_INSTANCE = str
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -37,7 +44,7 @@ class TestCase(unittest.TestCase):
             try:
                 size = DeviceIoControl(disk.psuedo_device_object).disk_get_drive_geometry_ex()
                 self.assertTrue(isinstance(size, int) or isinstance(size, long))
-            except WindowsException, error:
+            except WindowsException as error:
                 if error.winerror == 1:
                     # If there is MPIO disk, we cannot do IOCTLs on underlying SCSI disks
                     continue
@@ -50,7 +57,7 @@ class TestCase(unittest.TestCase):
         for device in devices:
             prop_list = device.get_available_property_ids()
             self.assertGreater(len(prop_list), 0)
-            self.assertIsInstance(prop_list[0], str)
+            self.assertIsInstance(prop_list[0], _STRING_INSTANCE)
 
     def test_rescan__storage(self):
         dm = DeviceManager()
