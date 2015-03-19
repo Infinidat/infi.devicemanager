@@ -16,6 +16,10 @@ disks = dm.disk_drives
 names = [disk.friendly_name for disk in disks]
 ```
 
+Supported Operating Systems
+---------------------------
+infi.devicemanager supports Windows Vista and later versions of Windows.
+
 Checking out the code
 =====================
 
