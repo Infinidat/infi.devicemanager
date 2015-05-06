@@ -6,12 +6,12 @@ import ctypes
 
 def ioctl_scsi_get_address(handle):
     size = _sizeof(structures.SCSI_ADDRESS)
-    instance = structures.SCSI_ADDRESS.create_from_string('\x00' * size)
+    instance = structures.SCSI_ADDRESS.create_from_string(b'\x00' * size)
     instance.Length = size
-    string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size)
+    string = ctypes.c_buffer(structures.SCSI_ADDRESS.write_to_string(instance), size).raw
     try:
         _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_SCSI_GET_ADDRESS, 0, 0, string, size)
-    except infi.wioctl.errors.WindowsException, exception:
+    except infi.wioctl.errors.WindowsException as exception:
         if exception.winerror == infi.wioctl.constants.ERROR_ACCESS_DENIED:
             raise chain(infi.wioctl.errors.InvalidHandle(exception.winerror))
     instance = structures.SCSI_ADDRESS.create_from_string(string)
@@ -19,19 +19,19 @@ def ioctl_scsi_get_address(handle):
 
 def ioctl_storage_get_device_number(handle):
     size = _sizeof(structures.STORAGE_DEVICE_NUMBER)
-    string = ctypes.c_buffer('\x00' * size, size)
+    string = ctypes.c_buffer(b'\x00' * size, size).raw
     _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, string, size)
     instance = structures.STORAGE_DEVICE_NUMBER.create_from_string(string)
     return (instance.DeviceNumber, instance.PartitionNumber,)
 
 def ioctl_disk_get_drive_geometry_ex(handle):
     size = _sizeof(structures.DISK_GEOMETRY_EX)
-    string = ctypes.c_buffer('\x00' * size, size)
+    string = ctypes.c_buffer(b'\x00' * size, size).raw
     try:
         # this IOCTL expects a variable-length buffer for storing infomation about partitions
         # we don't care about that, so we send a short buffer on purpose. this raises an exception
         _ = infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, 0, 0, string, size)
-    except infi.wioctl.api.WindowsException, e:
+    except infi.wioctl.api.WindowsException as e:
         if e.winerror != infi.wioctl.constants.ERROR_INSUFFICIENT_BUFFER:
             raise
     instance = structures.DISK_GEOMETRY_EX.create_from_string(string).DiskSize
@@ -42,7 +42,7 @@ def ioctl_volume_get_volume_disk_extents(handle):
     string = ctypes.c_buffer('\x00' * size, size)
     try:
         infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, 0, 0, string, size)
-    except infi.wioctl.api.WindowsException, e:
+    except infi.wioctl.api.WindowsException as e:
         if e.winerror != infi.wioctl.constants.ERROR_MORE_DATA:
             raise
     count = structures.DWORD.create_from_string(string)

@@ -37,7 +37,7 @@ class Device(object):
             dis, devinfo = handle
             try:
                 return functions.SetupDiGetDeviceProperty(dis, devinfo, key).python_object
-            except WindowsException, exception:
+            except WindowsException as exception:
                 if exception.winerror == constants.ERROR_NOT_FOUND:
                     raise KeyError(key)
                 chain(exception)
