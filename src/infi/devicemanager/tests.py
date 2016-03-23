@@ -1,6 +1,5 @@
 
 import unittest
-import mock
 import sys
 
 from . import DeviceManager
@@ -79,4 +78,3 @@ class TestCase(unittest.TestCase):
         for device in dm.disk_drives:
             instance_id = device._instance_id
             self.assertFalse(instance_id.isupper())
-

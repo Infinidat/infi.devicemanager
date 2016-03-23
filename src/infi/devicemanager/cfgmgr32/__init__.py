@@ -23,7 +23,6 @@ CM_REENUMERATE_ASYNCHRONOUS = 0x00000004
 CM_REENUMERATE_BITS = 0x00000007
 
 def errcheck():
-    from ctypes import GetLastError
     def errcheck(result, func, args):
         if result != CR_SUCCESS:
             raise RuntimeError(result)

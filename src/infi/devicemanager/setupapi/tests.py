@@ -1,7 +1,6 @@
 
 from infi import unittest
 from logging import getLogger
-import mock
 
 log = getLogger()
 
