@@ -46,7 +46,7 @@ def ioctl_volume_get_volume_disk_extents(handle):
         if e.winerror != infi.wioctl.constants.ERROR_MORE_DATA:
             raise
     count = structures.DWORD.create_from_string(string)
-    size = size + ((count - 1) *_sizeof(structures.DISK_EXTENT))
+    size = size + ((count - 1) * _sizeof(structures.DISK_EXTENT))
     string = ctypes.c_buffer('\x00' * size, size)
     infi.wioctl.ioctl(handle, infi.wioctl.constants.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, 0, 0, string, size)
     instance = structures.VOLUME_DISK_EXTENTS.create_from_string(string)
