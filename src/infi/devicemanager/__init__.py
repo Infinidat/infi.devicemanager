@@ -18,7 +18,8 @@ class Device(object):
         self._instance_id = instance_id
 
     def __repr__(self):
-        return u"<{}>".format(getattr(self, "friendly_name", self.description))
+        # we cant use hasattr and getattr here, because friendly_name is a property method that may raise exception
+        return u"<{}>".format(self.friendly_name if self.has_property("friendly_name") else self.description)
 
     @contextmanager
     def _open_handle(self):
