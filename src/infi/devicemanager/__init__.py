@@ -209,8 +209,7 @@ class DeviceManager(object):
             def match_class_guid(device):
                 try:
                     return device.class_guid == constants.GENDISK_GUID_STRING
-                except KeyError:
-                    # race condition can happen when devices disappear
+                except:
                     return False
             disk_drives.extend(filter(match_class_guid, controller.children))
         return disk_drives
