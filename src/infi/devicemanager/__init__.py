@@ -138,6 +138,9 @@ class Device(object):
     def is_real_device(self):
         return self.has_property("location")
 
+    def is_iscsi_device(self):
+        return any("iSCSI" in hardware_id for hardware_id in self.hardware_ids)
+
     def is_hidden(self):
         return bool(self.devnode_status & constants.DN_NO_SHOW_IN_DM)
 
@@ -161,7 +164,7 @@ class Device(object):
 
     def rescan(self):
         from .cfgmgr32 import open_handle, CM_Reenumerate_DevNode_Ex
-        if not self.is_real_device():
+        if not self.is_real_device() and not self.is_iscsi_device():
             return
         with open_handle(self._instance_id) as handle:
             machine_handle, device_handle = handle
@@ -209,8 +212,7 @@ class DeviceManager(object):
             def match_class_guid(device):
                 try:
                     return device.class_guid == constants.GENDISK_GUID_STRING
-                except KeyError:
-                    # race condition can happen when devices disappear
+                except:
                     return False
             disk_drives.extend(filter(match_class_guid, controller.children))
         return disk_drives
