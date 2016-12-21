@@ -139,7 +139,7 @@ class Device(object):
         return self.has_property("location")
 
     def is_iscsi_device(self):
-        return any("iSCSI" in hardware_id for hardware_id in self.hardware_ids)
+        return any("iscsi" in hardware_id.lower() for hardware_id in self.hardware_ids)
 
     def is_hidden(self):
         return bool(self.devnode_status & constants.DN_NO_SHOW_IN_DM)
