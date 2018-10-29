@@ -3,7 +3,6 @@ __import__("pkg_resources").declare_namespace(__name__)
 from contextlib import contextmanager
 from infi.exceptools import chain
 from .setupapi import functions, properties, constants
-from .ioctl import DeviceIoControl
 from infi.pyutils.lazy import cached_method
 from logging import getLogger
 
