@@ -141,9 +141,9 @@ class Device(object):
     def is_iscsi_device(self):
         try:
             hardware_ids = self.hardware_ids
-            return any("iscsi" in hardware_id.lower() for hardware_id in hardware_ids)
         except KeyError:
             return False
+        return any("iscsi" in hardware_id.lower() for hardware_id in hardware_ids)
 
     def is_hidden(self):
         return bool(self.devnode_status & constants.DN_NO_SHOW_IN_DM)
