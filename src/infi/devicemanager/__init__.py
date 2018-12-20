@@ -3,7 +3,6 @@ __import__("pkg_resources").declare_namespace(__name__)
 from contextlib import contextmanager
 from infi.exceptools import chain
 from .setupapi import functions, properties, constants
-from .ioctl import DeviceIoControl
 from infi.pyutils.lazy import cached_method
 from logging import getLogger
 
@@ -140,7 +139,11 @@ class Device(object):
         return self.has_property("location")
 
     def is_iscsi_device(self):
-        return any("iscsi" in hardware_id.lower() for hardware_id in self.hardware_ids)
+        try:
+            hardware_ids = self.hardware_ids
+        except KeyError:
+            return False
+        return any("iscsi" in hardware_id.lower() for hardware_id in hardware_ids)
 
     def is_hidden(self):
         return bool(self.devnode_status & constants.DN_NO_SHOW_IN_DM)
