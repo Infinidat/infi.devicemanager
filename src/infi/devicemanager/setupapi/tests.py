@@ -1,5 +1,5 @@
 
-from infi import unittest
+import unittest
 from logging import getLogger
 
 log = getLogger()
