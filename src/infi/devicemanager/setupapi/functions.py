@@ -57,7 +57,7 @@ def generator(decorated_func):
                 index += 1
             except WindowsException as exception:
                 if exception.winerror in [ERROR_NO_MORE_ITEMS, ERROR_BAD_COMMAND]: # TODO why ERROR_BAD_COMMAND?
-                    raise StopIteration
+                    return
                 chain(exception)
     return callee
 
