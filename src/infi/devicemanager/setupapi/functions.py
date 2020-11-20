@@ -146,7 +146,7 @@ class Property(object):
 
     def _get_python_object(self):
         from . import properties
-        from .structures import Struct, FixedSizeArray, ULInt32, ULInt8
+        from .structures import Struct, FixedSizeArray, ULInt32, ULInt64, ULInt8
         from .structures import FILETIME, SECURITY_DESCRIPTOR
         from . import ConvertStringSecurityDescriptorToSecurityDescriptorW as ConvertSDDL
         from .constants import SDDL_REVISION_1
@@ -161,6 +161,10 @@ class Property(object):
                           properties.DEVPROP_TYPE_NTSTATUS]:
             class Value(Struct):
                 _fields_ = [ULInt32("value")]
+            return Value.create_from_string(self._buffer).value
+        if self._type in [properties.DEVPROP_TYPE_UINT64]:
+            class Value(Struct):
+                _fields_ = [ULInt64("value")]
             return Value.create_from_string(self._buffer).value
         if self._type in [properties.DEVPROP_TYPE_BINARY]:
             class Value(Struct):
@@ -179,5 +183,5 @@ class Property(object):
             ConvertSDDL(c_buffer(self._buffer), SDDL_REVISION_1, sd_buffer, 0)
             # TODO requires to call LocalFree
             return SECURITY_DESCRIPTOR.create_from_string(sd_buffer)
-        log = debug("{!r}. {!r}, {!r}".format(self._buffer, self._type, self._key))
+        log.debug("{!r}. {!r}, {!r}".format(self._buffer, self._type, self._key))
         raise ValueError(self._buffer, self._type)
