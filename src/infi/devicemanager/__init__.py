@@ -96,6 +96,36 @@ class Device(object):
 
     @property
     @cached_method
+    def base_container_id(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_BaseContainerId)
+
+    @property
+    @cached_method
+    def drvpkg_detailedDescription(self):
+        return self._get_setupapi_property(properties.DEVPKEY_DrvPkg_DetailedDescription)
+
+    @property
+    @cached_method
+    def device_busReportedDeviceDesc(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_BusReportedDeviceDesc)
+
+    @property
+    @cached_method
+    def device_deviceDesc(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_DeviceDesc)
+
+    @property
+    @cached_method
+    def device_driverDesc(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_DriverDesc)
+
+    @property
+    @cached_method
+    def container_id(self):
+        return self._get_setupapi_property(properties.DEVPKEY_Device_ContainerId)
+
+    @property
+    @cached_method
     def ui_number(self):
         return self._get_setupapi_property(properties.DEVPKEY_Device_UINumber)
 
